@@ -36,3 +36,20 @@ query($getUserId: ID!) {
   "getUserId": 2
 }
 ```
+
+### Login
+```
+query($input: LoginInput!) {
+  login(input: $input) {
+    username,
+    email
+  }
+}
+
+{
+  "input": {
+    "email": "3example@email.com",
+    "password": "test123"
+  }
+}
+```

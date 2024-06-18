@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const { getHashedPassword } = require('../utils')
+const { getHashedPassword, comparePasswords } = require('../utils')
 
 const findAllUsers = async () => {
   try {
@@ -32,8 +32,30 @@ const createUser = async (input) => {
   }
 }
 
+const getUserByEmailAndPassword = async (input) => {
+  try {
+    const { email, password } = input
+    const user = await User.findOne({ where: { email } })
+
+    if (user) {
+      const passwordMatch = await comparePasswords(password, user.toJSON().password)
+        if (passwordMatch) {
+          return user
+        }
+
+        throw new Error('Invalid credentials')
+    }
+
+    throw new Error('Invalid credentials')
+
+  } catch (error) {
+    throw new Error(error.message)
+  }
+}
+
 module.exports = {
   findAllUsers,
   findUserById,
-  createUser
+  createUser,
+  getUserByEmailAndPassword
 };
