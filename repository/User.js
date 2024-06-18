@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const { getHashedPassword } = require('../utils')
 
 const findAllUsers = async () => {
   try {
@@ -20,7 +21,19 @@ const findUserById = async (id) => {
   }
 };
 
+const createUser = async (input) => {
+  try {
+    const { password, ...rest } = input;
+    const hashedPassword = await getHashedPassword(password);
+    const newUser = await User.create({ password: hashedPassword, ...rest });
+    return newUser
+  } catch (error) {
+    throw new Error('Unable to create new user');
+  }
+}
+
 module.exports = {
   findAllUsers,
   findUserById,
+  createUser
 };

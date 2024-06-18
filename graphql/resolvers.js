@@ -1,4 +1,4 @@
-const { findAllUsers, findUserById } = require('../repository/User');
+const { findAllUsers, findUserById, createUser } = require('../repository/User');
 
 const resolvers = {
   Query: {
@@ -11,8 +11,7 @@ const resolvers = {
   },
   Mutation: {
     createUser: async (_root, { input }) => {
-      const { username, email, password, first_name, last_name, contact, address } = input;
-      const newUser = await User.create({ username, email, password, first_name, last_name, contact, address });
+      const newUser = await createUser(input);
       return newUser;
     },
   },
