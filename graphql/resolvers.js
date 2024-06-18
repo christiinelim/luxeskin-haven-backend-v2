@@ -1,22 +1,19 @@
-const User = require('../models/User');
+const { findAllUsers, findUserById } = require('../repository/User');
 
 const resolvers = {
   Query: {
     getUsers: async () => {
-      try {
-        const users = await User.findAll();
-        return users;
-      } catch (error) {
-        throw new Error('Unable to fetch users', error);
-      }
+      return await findAllUsers();
     },
-    getUser: async (parent, { id }) => {
-      return await User.findByPk(id);
+    getUser: async (_root, { id }) => {
+      return await findUserById(id);
     },
   },
   Mutation: {
-    createUser: async (parent, { username, email }) => {
-      return await User.create({ username, email });
+    createUser: async (_root, { input }) => {
+      const { username, email, password, first_name, last_name, contact, address } = input;
+      const newUser = await User.create({ username, email, password, first_name, last_name, contact, address });
+      return newUser;
     },
   },
 };

@@ -1,5 +1,5 @@
 const sequelize = require("../sequelize");
-const { DataTypes } = require("sequelize");
+const { DataTypes, Sequelize } = require("sequelize");
 
 const User = sequelize.define("User", {
   username: {
@@ -11,14 +11,48 @@ const User = sequelize.define("User", {
     allowNull: false,
     unique: true,
   },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING,
+  },
+  first_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  last_name: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  contact: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  }, 
+  address: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  verified: {
+    type: DataTypes.STRING,
+    defaultValue: 'No',
+    allowNull: false,
+  }
+}, {
+  createdAt: 'created_at', 
+  updatedAt: 'updated_at'
 });
 
-// Synchronize the model with the database
-// This function will delete all existing tables in the database
+
+
+
+
+// delete and synchronize tables
 const syncDatabase = async () => {
   await sequelize.sync();
   console.log("Database synchronized.");
 };
-// remember to comment this after server runs ones.
+
 // syncDatabase();
 module.exports = User;
